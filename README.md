@@ -17,4 +17,10 @@ Example:
 ```
 ./joplin-deb.sh 2.5.12
 ```
+If the build is successful, it will create a DEB file in the current user's Downloads folder. 
+
+Install it with:
+```
+sudo apt install ~/Downloads/joplin-desktop_*.deb
+```
 

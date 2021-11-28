@@ -1,6 +1,6 @@
 This script will download the [Joplin](https://joplinapp.org/desktop) source and package it into a DEB file.
 The DEB file should be installable on relatively modern Debian/Ubuntu like OS'.
-Tested on Debian 11, your milage may vary.
+Tested on Debian 11, your mileage may vary.
 
 Requirements:
 

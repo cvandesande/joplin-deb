@@ -2,7 +2,7 @@
 
 set -e
 if [ $# -eq 0 ]; then
-    printf "Usage: joplin-deb.sh version\nExample: joplin-deb.sh 2.15.12\n"
+    printf "Usage: joplin-deb.sh version\nExample: ./joplin-deb.sh 2.5.12\n"
     exit 1
 fi
 

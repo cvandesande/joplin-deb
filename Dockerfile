@@ -41,12 +41,12 @@ RUN set -ex \
          electron-installer-debian \
     && export PATH=$(npm bin):$PATH \
     # Package installer has issues with the slash "/" in the name \
-    && sed -i 's/@joplin\/app-desktop/joplin-desktop/' packages/app-desktop/package.json \
+    && sed -i 's/@joplin\/app-desktop/joplin/' packages/app-desktop/package.json \
     # Create DEB package \
     && cd packages/app-desktop \
     && electron-packager . --platform linux --arch x64 --out dist/ \
     && electron-installer-debian \
-         --src dist/joplin-desktop-linux-x64 \
+         --src dist/joplin-linux-x64 \
          --dest dist/installers/ \
          --arch amd64 \
     # Cleanup \

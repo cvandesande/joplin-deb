@@ -31,7 +31,7 @@ docker run \
     joplin-deb /bin/bash -c "VERSION=$1 export.sh"
 
 box_out "Build complete!" \
-    "Joplin deb package saved to ${HOME}/Downloads/joplin-desktop_$1_amd64.deb" \
+    "Joplin deb package saved to ${HOME}/Downloads/joplin_$1_amd64.deb" \
     "Install with:" \
-    "sudo dpkg -i ~/Downloads/joplin-desktop_$1_amd64.deb" \
+    "sudo dpkg -i ~/Downloads/joplin_$1_amd64.deb" \
     "Or with your package manager of choice"

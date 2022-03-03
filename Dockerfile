@@ -33,13 +33,13 @@ RUN set -ex \
          /"releaseIOS"/d;\
          /"releasePluginGenerator"/d; \
          /"releaseServer"/d' package.json \
-    # Build Joplin normally \
-    && npm install --no-audit --progress=false \
     # Install electron packager tools \
-    && npm install --no-audit --progress=false \
+    && yarn add \
          electron-packager \
          electron-installer-debian \
     && export PATH=$(npm bin):$PATH \
+    # Build Joplin normally \
+    && yarn install \
     # Package installer has issues with the slash "/" in the name \
     && sed -i 's/@joplin\/app-desktop/joplin/' packages/app-desktop/package.json \
     # Create DEB package \

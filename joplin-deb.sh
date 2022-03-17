@@ -23,6 +23,7 @@ box_out()
   tput sgr 0
 }
 
+docker pull node:lts-bullseye-slim
 docker build . --build-arg VERSION=$1 -t joplin-deb
 docker run \
     --rm \

@@ -2,6 +2,8 @@ FROM node:lts-bullseye-slim
 
 ARG VERSION
 
+ENV NODE_OPTIONS=--openssl-legacy-provider
+
 WORKDIR /usr/src/app
 
 RUN set -ex \
@@ -33,13 +35,13 @@ RUN set -ex \
          /"releaseIOS"/d;\
          /"releasePluginGenerator"/d; \
          /"releaseServer"/d' package.json \
+    # Build Joplin normally \
+    && yarn install \
     # Install electron packager tools \
     && yarn add \
          electron-packager \
          electron-installer-debian \
     && export PATH=$(npm bin):$PATH \
-    # Build Joplin normally \
-    && yarn install \
     # Package installer has issues with the slash "/" in the name \
     && sed -i 's/@joplin\/app-desktop/joplin/' packages/app-desktop/package.json \
     # Create DEB package \

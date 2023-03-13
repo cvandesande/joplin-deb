@@ -4,10 +4,10 @@ ARG VERSION
 
 ENV NODE_OPTIONS=--openssl-legacy-provider
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src
 
 RUN set -ex \
-    # Install Joplin build dependencies \
+    # Install Joplin build dependencies
     && apt-get update \
     && apt-get upgrade -yq \
     && apt-get install -yq \
@@ -20,14 +20,17 @@ RUN set -ex \
          rsync \
          curl \
     && curl -fsSL -o joplin.tar.gz \
-         https://github.com/laurent22/joplin/archive/refs/tags/v"${VERSION}".tar.gz \
+         https://github.com/laurent22/joplin/archive/refs/tags/v"${VERSION}".tar.gz
+
+RUN set -ex \
+    # Compile Joplin
     && mkdir joplin \
     && tar -xzf joplin.tar.gz -C joplin/ --strip-components=1 \
     && rm joplin.tar.gz \
     && cd joplin \
-    # Workaround for socket timeout errors with lerna \
+    # Workaround for socket timeout errors with lerna
     && sed -i '0,/--no-ci/s//--no-ci --concurrency=2/' package.json \
-    # Remove some things we don't need to build \
+    # Remove some things we don't need to build
     && sed -i '/"releaseAndroid"/d; \
          /"releaseAndroidClean"/d; \
          /"releaseCli"/d; \
@@ -36,23 +39,23 @@ RUN set -ex \
          /"releasePluginGenerator"/d; \
          /"releaseServer"/d' package.json \
     # Build Joplin normally \
-    && yarn install \
-    # Install electron packager tools \
+    && yarn install
+
+RUN set -ex \
+    # Install electron packager tools
     && yarn add \
-         electron-packager \
-         electron-installer-debian \
-    && export PATH=$(npm bin):$PATH \
+      electron-packager \
+      electron-installer-debian \
+    && cd joplin \
     # Package installer has issues with the slash "/" in the name \
     && sed -i 's/@joplin\/app-desktop/joplin/' packages/app-desktop/package.json \
     # Create DEB package \
     && cd packages/app-desktop \
-    && electron-packager . --platform linux --arch x64 --out dist/ \
-    && electron-installer-debian \
+    && /usr/src/node_modules/electron-packager/bin/electron-packager.js . --platform linux --arch x64 --out dist/ \
+    && /usr/src/node_modules/.bin/electron-installer-debian \
          --src dist/joplin-linux-x64 \
          --dest dist/installers/ \
-         --arch amd64 \
-    # Cleanup \
-    && rm -rf /var/lib/apt/lists/*
+         --arch amd64
 
 ADD export.sh /usr/local/bin
 

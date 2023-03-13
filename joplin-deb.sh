@@ -28,7 +28,7 @@ docker build . --build-arg VERSION=$1 -t joplin-deb
 docker run \
     --rm \
     --name joplin-deb \
-    -v ${HOME}/Downloads:/usr/src/app/Downloads \
+    -v ${HOME}/Downloads:/usr/src/Downloads \
     joplin-deb /bin/bash -c "VERSION=$1 export.sh"
 
 box_out "Build complete!" \

@@ -8,6 +8,6 @@ printf "Downloads owner is $OWNER\n"
 
 # Copy package to Downloads and update file owner
 find / -name Downloads
-mv /usr/src/joplin/packages/app-desktop/dist/installers/joplin_2.9.17_amd64.deb /usr/src/Downloads/
+mv /usr/src/joplin/packages/app-desktop/dist/installers/*.deb /usr/src/Downloads/
 chown $OWNER:$OWNER Downloads/joplin_${VERSION}_amd64.deb
 

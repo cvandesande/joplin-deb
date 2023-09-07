@@ -17,6 +17,7 @@ RUN set -ex \
          pkg-config \
          python-is-python2 \
          libsecret-1-dev \
+         libvips-dev \
          rsync \
          curl \
     && curl -fsSL -o joplin.tar.gz \

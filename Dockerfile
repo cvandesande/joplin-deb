@@ -1,4 +1,4 @@
-FROM node:lts-bullseye-slim
+FROM node:lts-bookworm-slim
 
 ARG VERSION
 
@@ -15,7 +15,6 @@ RUN set -ex \
          g++ \
          fakeroot \
          pkg-config \
-         python-is-python2 \
          libsecret-1-dev \
          libvips-dev \
          rsync \
@@ -36,8 +35,9 @@ RUN set -ex \
          /"releaseAndroidClean"/d; \
          /"releaseCli"/d; \
          /"releaseClipper"/d; \
-         /"releaseIOS"/d;\
+         /"releaseIOS"/d; \
          /"releasePluginGenerator"/d; \
+         /"releasePluginRepoCli"/d; \
          /"releaseServer"/d' package.json \
     # Build Joplin normally \
     && yarn install

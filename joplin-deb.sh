@@ -24,7 +24,7 @@ box_out()
 }
 
 docker pull node:lts-bookworm-slim
-docker build . --build-arg VERSION=$1 -t joplin-deb --load
+docker build . --build-arg VERSION=$1 -t joplin-deb
 docker run \
     --rm \
     --name joplin-deb \

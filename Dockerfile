@@ -11,6 +11,7 @@ RUN set -ex \
     && apt-get update \
     && apt-get upgrade -yq \
     && apt-get install -yq \
+         git \
          make \
          g++ \
          fakeroot \
@@ -40,7 +41,8 @@ RUN set -ex \
          /"releasePluginRepoCli"/d; \
          /"releaseServer"/d' package.json \
     # Build Joplin normally \
-    && yarn install
+    && rm -rf node_modules \
+    && yarn install --immutable
 
 RUN set -ex \
     # Install electron packager tools

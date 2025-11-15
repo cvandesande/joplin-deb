@@ -1,8 +1,6 @@
-FROM node:lts-bookworm-slim
+FROM node:lts-trixie-slim
 
 ARG VERSION
-
-ENV NODE_OPTIONS=--openssl-legacy-provider
 
 WORKDIR /usr/src
 
@@ -23,6 +21,8 @@ RUN set -ex \
     && curl -fsSL -o joplin.tar.gz \
          https://github.com/laurent22/joplin/archive/refs/tags/v"${VERSION}".tar.gz
 
+ENV SHARP_IGNORE_GLOBAL_LIBVIPS=1
+
 RUN set -ex \
     # Compile Joplin
     && mkdir joplin \
@@ -39,26 +39,13 @@ RUN set -ex \
          /"releaseIOS"/d; \
          /"releasePluginGenerator"/d; \
          /"releasePluginRepoCli"/d; \
-         /"releaseServer"/d' package.json \
+         /"releaseServer"/d; \
+         /"releaseTranscribe"/d' package.json \
     # Build Joplin normally \
     && rm -rf node_modules \
-    && yarn install --immutable
-
-RUN set -ex \
-    # Install electron packager tools
-    && yarn add \
-      electron-packager \
-      electron-installer-debian \
-    && cd joplin \
-    # Package installer has issues with the slash "/" in the name \
-    && sed -i 's/@joplin\/app-desktop/joplin/' packages/app-desktop/package.json \
-    # Create DEB package \
+    && yarn install --immutable \
     && cd packages/app-desktop \
-    && /usr/src/node_modules/electron-packager/bin/electron-packager.js . --platform linux --arch x64 --out dist/ \
-    && /usr/src/node_modules/.bin/electron-installer-debian \
-         --src dist/joplin-linux-x64 \
-         --dest dist/installers/ \
-         --arch amd64
+    && yarn run dist
 
 ADD export.sh /usr/local/bin
 

@@ -16,18 +16,15 @@ RUN set -ex \
          pkg-config \
          libsecret-1-dev \
          libvips-dev \
-         rsync \
-         curl \
-    && curl -fsSL -o joplin.tar.gz \
-         https://github.com/laurent22/joplin/archive/refs/tags/v"${VERSION}".tar.gz
+         rsync
+
 
 ENV SHARP_IGNORE_GLOBAL_LIBVIPS=1
 
 RUN set -ex \
     # Compile Joplin
-    && mkdir joplin \
-    && tar -xzf joplin.tar.gz -C joplin/ --strip-components=1 \
-    && rm joplin.tar.gz \
+    && git clone --depth 1 --branch v"${VERSION}" \
+        https://github.com/laurent22/joplin.git joplin \
     && cd joplin \
     # Workaround for socket timeout errors with lerna
     && sed -i '0,/--no-ci/s//--no-ci --concurrency=2/' package.json \
@@ -43,7 +40,10 @@ RUN set -ex \
          /"releaseTranscribe"/d' package.json \
     # Build Joplin normally \
     && rm -rf node_modules \
-    && yarn install --immutable \
+    && yarn install --immutable || \
+    (echo "Build failed, dumping logs:" \
+     find /tmp -type f -name "*.log" -exec sh -c 'echo "=== {} ===" && cat {}' \; && \
+     exit 1) \
     && cd packages/app-desktop \
     && yarn run dist
 
